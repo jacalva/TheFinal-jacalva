@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/dBDj9BUb)
-## Your Name:
+## Your Name: Jeniece Calva
 
 # CIDM 3312 Midterm Exam Part 2 (60 Points)
 
