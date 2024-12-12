@@ -1,0 +1,120 @@
+@page
+@model TheFinal_jacalva.Pages_ORS.ORSModel
+@using TheFinal_jacalva.Models;
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    // Initialize copies sold for studio 1
+    decimal totalCopiesSoldStudio1 = 0; 
+    
+}
+
+<br>
+
+<div class="row" style="max-width: 80%; height: 400px; margin: 0 auto; overflow: hidden;"> 
+    <img src="img/ORSpage.png" class="img-fluid float-start" style="border-radius: 50px; object-fit: cover; width: 100%; height: 100%;">
+</div><br>
+
+
+<div class="text-center">
+    <button type="button" class="btn btn-outline-primary" disabled>
+        <span class="text-primary">Year of Company Acquisition: @Model.Studio1AcquisitionYear</span>
+    </button>
+</div>
+
+
+        @foreach (var item in Model.Game)
+        {
+        
+         double reviewAvg = item.Rating;
+
+         totalCopiesSoldStudio1 += (decimal)item.CopiesSold; 
+         //Math logic; Conversion to decimal required, due to it being a double, double was required in order for the sorting order to work without issue.
+
+<hr class="my-4"> //line and space margin
+
+  <div class="row">
+        
+        <div class="col-2 row d-flex justify-content-center align-items-center"> <!--IMAGE-->
+        <img src="@item.ImageURL" class="img-fluid" /> 
+        </div>   
+        
+        
+    <div class="col-7 text-start">  
+        
+        <h3><span class="text-info">@Html.DisplayFor(modelItem => item.GameTitle)</span></h3>
+
+        <p class = "fs-6">
+            @Html.DisplayFor(modelItem => item.Description)    
+        </p>
+
+    </div> <!--end of col-7 text-start-->
+
+
+        <!--Rating-->
+        <div class="col-3 text-end">           
+        <p>
+            <span class="text-primary">@String.Format("{0:F1}", reviewAvg) </span> <!-- Display review average formatted to 1 decimal place -->
+
+            <!-- place code here to display star icons (Filled in star, half star, and empty star) -->
+                <span class="text-primary">            
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (reviewAvg >= i) 
+                    {
+                        <i class="bi bi-star-fill" style="color: gold;"></i> <!-- Filled in star colored Gold -->
+                    }
+                    else if (reviewAvg >= i - 0.5)
+                    {
+                        <i class="bi bi-star-half" style="color: gold;"></i> <!-- Half star colored gold -->
+                    }
+                    else
+                    {
+                        <i class="bi bi-star"></i> <!-- Empty Star -->
+                    }
+                }
+                </span>    
+            <!--end of star forloop code-->     
+        </p>
+
+        <br><br><br>
+
+        <p>
+         <h4><span class="text-secondary text-center">
+        Year Released:
+         <br>
+         @Html.DisplayFor(modelItem => item.YearReleased)
+         </span></h4>   
+        </p>
+
+
+        </div> <!-- end of col-3 -->
+
+        <div class="mt-auto text-end"> 
+        <h3><span class="text-info">@item.CopiesSold.ToString("N0") Copies Sold</span></h3>
+        <!-- Number of Copies -->
+        </div> 
+             
+             
+
+    </div> <!--end of Row-->
+
+        }
+
+
+
+<hr class="my-4"> <!--line and space margin-->
+
+        <!--Total Number of Copies sold-->
+        
+
+<div class="card border-secondary mb-3 mx-auto" style="max-width: 20rem;"> 
+  <div class="card-body text-center">
+            <h4 class="card-title">Total Copies Sold:</h4>
+            <span class="text-secondary">
+            <p class="card-text">@String.Format("{0:N0}", totalCopiesSoldStudio1)</p>
+            </span>
+  </div>
+</div>

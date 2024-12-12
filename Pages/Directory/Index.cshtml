@@ -1,0 +1,155 @@
+@page
+@model TheFinal_jacalva.Pages_Directory.IndexModel
+@using TheFinal_jacalva.Models
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br>
+<div class="row">@*SEARCH BAR*@
+    
+    <form class="d-flex justify-content-end" role="search" asp-page="./Index" method="get">
+        <div class="col-3">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input class="form-control me-2" type="search" name="CurrentSearch" value="@Model.CurrentSearch" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<br>
+
+<div class="row justify-content-center" style="max-width: 80%; height: 300px; margin: 0 auto; overflow: hidden;"> 
+    <img src="img/ObsidianRealm.png" class="rounded" style="width: 200px; height: 200px;">
+    <img src="img/RuneBlade.png" class="rounded" style="width: 200px; height: 200px;">  
+    <img src="img/NightShade.png" class="rounded" style="width: 200px; height: 200px;">
+
+<div class="d-flex justify-content-center"><h4>
+    <a asp-page="/ORS" class="btn btn-outline-secondary btn-sm me-2">OBS Sales</a>
+    <a asp-page="/NBE" class="btn btn-outline-secondary btn-sm me-2">RBE Sales</a>
+    <a asp-page="/NSI" class="btn btn-outline-secondary btn-sm">NSI Sales</a>
+</h4></div>
+
+</div>
+
+<div class="d-flex justify-content-end">
+        <a asp-page="/Directory/Create" class="btn btn-success btn-sm me-2">+Add New Game</a>
+</div>
+
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <span class="text-primary">
+                @Html.DisplayNameFor(model => model.Game[0].ImageURL)
+                </span>
+            </th>
+
+
+            <th>                
+                @{
+                    //Alternate sort order Game Title
+                    var firstSort = "first_asc";
+                    if (Model.CurrentSort == "first_asc")
+                    {
+                        firstSort = "first_desc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@firstSort" asp-route-PageNum="@Model.PageNum">@Html.DisplayNameFor(model => model.Game[0].GameTitle)</a>
+            </th>
+
+
+            <th>
+                <span class="text-primary">
+                @Html.DisplayNameFor(model => model.Game[0].Description)
+                </span>
+            </th>
+            
+            <th> 
+                <span class="text-primary">               
+                @Html.DisplayNameFor(model => model.Game[0].Rating)
+                </span>
+            </th>
+
+            <th>
+                @{
+                    //Alternate sort order copiessold
+                    var secondSort = "second_asc";
+                    if (Model.CurrentSort == "second_asc")
+                    {
+                        secondSort = "second_desc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@secondSort" asp-route-PageNum="@Model.PageNum">Copies Sold</a>
+            </th>
+            <th>
+            <span class="text-primary">
+            Studio
+            </span>
+            </th>            
+            </tr>
+    </thead>
+    <tbody>
+    
+    @foreach (var item in Model.Game) {
+        <tr>
+            <td>
+                <img src="@item.ImageURL" class="img-fluid" /> 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CopiesSold)
+            </td>
+            <td>
+                    <!-- Display the names of all studios associated-->
+                    @foreach (var studioGame in item.StudioGames)
+                    {
+                        <span>@studioGame.Studio.StudioName</span><br />
+                    }
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.GameID">Edit</a> 
+                <a asp-page="./Details" asp-route-id="@item.GameID">Details</a> 
+                <a asp-page="./Delete" asp-route-id="@item.GameID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<hr />
+@{
+    // If we are on page 1, prevDisabled will be set to the "disabled" class
+    // otherwise, it will be empty. So our previous button will be enabled or disabled based on this logic
+    var prevDisabled = "";
+    var nextDisabled = "";
+    if (Model.PageNum <= 1)
+    {
+        prevDisabled = "disabled";
+    }
+    if (Model.PageNum >= Model.TotalPages)
+    {
+        nextDisabled = "disabled";
+    }
+}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled"><a class="page-link" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum - 1)">Previous</a></li>
+        <li class="page-item @nextDisabled"><a class="page-link" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum + 1)">Next</a></li>
+    </ul>
+</nav>
+
