@@ -20,19 +20,18 @@
     </form>
 </div>
 
+@*Three Studio Cards with links*@
 <br>
-
 <div class="row justify-content-center" style="max-width: 80%; height: 300px; margin: 0 auto; overflow: hidden;"> 
-    <img src="img/ObsidianRealm.png" class="rounded" style="width: 200px; height: 200px;">
-    <img src="img/RuneBlade.png" class="rounded" style="width: 200px; height: 200px;">  
-    <img src="img/NightShade.png" class="rounded" style="width: 200px; height: 200px;">
+        <img src="img/ObsidianRealm.png" class="rounded" style="width: 200px; height: 200px;">
+        <img src="img/RuneBlade.png" class="rounded" style="width: 200px; height: 200px;">  
+        <img src="img/NightShade.png" class="rounded" style="width: 200px; height: 200px;">
 
-<div class="d-flex justify-content-center"><h4>
-    <a asp-page="/ORS" class="btn btn-outline-secondary btn-sm me-2">OBS Sales</a>
-    <a asp-page="/NBE" class="btn btn-outline-secondary btn-sm me-2">RBE Sales</a>
-    <a asp-page="/NSI" class="btn btn-outline-secondary btn-sm">NSI Sales</a>
-</h4></div>
-
+    <div class="d-flex justify-content-center"><h4>
+        <a asp-page="/ORS" class="btn btn-outline-secondary btn-sm me-2">OBS Sales</a>
+        <a asp-page="/RBE" class="btn btn-outline-secondary btn-sm me-2">RBE Sales</a>
+        <a asp-page="/NSI" class="btn btn-outline-secondary btn-sm">NSI Sales</a>
+    </h4></div>
 </div>
 
 <div class="d-flex justify-content-end">
@@ -53,7 +52,7 @@
 
             <th>                
                 @{
-                    //Alternate sort order Game Title
+                    //Sort order Game Title
                     var firstSort = "first_asc";
                     if (Model.CurrentSort == "first_asc")
                     {
@@ -87,16 +86,18 @@
                 }
                 <a asp-page="./Index" asp-route-CurrentSort="@secondSort" asp-route-PageNum="@Model.PageNum">Copies Sold</a>
             </th>
+
             <th>
-            <span class="text-primary">
-            Studio
-            </span>
+                <span class="text-primary">
+                    Studio
+                </span>
             </th>            
-            </tr>
+        </tr>
     </thead>
-    <tbody>
-    
-    @foreach (var item in Model.Game) {
+
+    <tbody>    
+    @foreach (var item in Model.Game) 
+    {
         <tr>
             <td>
                 <img src="@item.ImageURL" class="img-fluid" /> 
@@ -114,7 +115,7 @@
                 @Html.DisplayFor(modelItem => item.CopiesSold)
             </td>
             <td>
-                    <!-- Display the names of all studios associated-->
+                    <!-- Display the names of all studios associated with their games-->
                     @foreach (var studioGame in item.StudioGames)
                     {
                         <span>@studioGame.Studio.StudioName</span><br />
@@ -126,12 +127,14 @@
                 <a asp-page="./Delete" asp-route-id="@item.GameID">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
 
 
 <hr />
+
+@*Previous and Next Buttons*@
 @{
     // If we are on page 1, prevDisabled will be set to the "disabled" class
     // otherwise, it will be empty. So our previous button will be enabled or disabled based on this logic
@@ -148,8 +151,10 @@
 }
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-        <li class="page-item @prevDisabled"><a class="page-link" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum - 1)">Previous</a></li>
-        <li class="page-item @nextDisabled"><a class="page-link" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum + 1)">Next</a></li>
+        @*Border border-primary would not work in this line of code for some reason, switched method to style border*@
+        <li class="page-item @prevDisabled"><a class="page-link" style="border: 2px solid #9447c7;" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum - 1)">Previous</a></li>
+        <li class="page-item @nextDisabled"><a class="page-link" style="border: 2px solid #9447c7" asp-page="./Index" asp-route-CurrentSort="@Model.CurrentSort" asp-route-PageNum="@(Model.PageNum + 1)">Next</a></li>
     </ul>
 </nav>
+
 
